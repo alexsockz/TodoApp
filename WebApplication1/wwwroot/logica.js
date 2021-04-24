@@ -120,6 +120,8 @@ function CaricaTodos()
                 divTodo.appendChild(isComplete);
                 divTodo.appendChild(del);
                 tbody.appendChild(divTodo);
+
+                $('#loading').hide();
             }
 
         }
