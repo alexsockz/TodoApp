@@ -1,0 +1,203 @@
+/*
+    aggiungi    //fa da barra in alto, in via molto teorica dovrebbe essere 'fixed' ma se metto fixed si sovrappone con #todolist
+            name
+            text
+            checkbox
+            categoria
+    todolist    //contiene le varie categorie, obbiettivo: una categoria deve essere una colonna alta 100%-altezza_di_aggiungi-altezza_scrollbar
+            divcategoria
+                        divTodo
+                                taskToDo
+                                isComplete
+                                singolaCategoria
+                                del
+                        divTodo
+                                taskToDo
+                                isComplete
+                                singolaCategoria
+                                del
+            divcategoria
+                        divTodo
+                                taskToDo
+                                isComplete
+                                singolaCategoria
+                                del
+                        divTodo
+                                taskToDo
+                                isComplete
+                                singolaCategoria
+                                del*/
+
+
+            #grid
+            {
+                display: grid;
+                height: 100%;
+                grid-template-columns: 1fr 70px;
+            }
+            #aggiungi_categoria
+            {
+                height: 100%;
+                background-color: brown;
+                border-radius: 0px 0px 0px 15px;
+            }
+            body 
+            {                
+                width: 100vw;
+                background: #A2FFFF;
+                /* height: 100vh; */
+                margin: 0px;
+                overflow-x: auto;
+            }
+            #aggiungi
+            {
+                display: inline-block;
+            }
+            * 
+            {
+                margin: 0;
+                padding: 0;
+            }
+            #aggiungi
+            { 
+                display: block;
+                top:0;
+                height: 40px;
+               
+            }
+            #todolist
+            {
+                display: block;
+                top: 40px;
+                height: 100%;
+                white-space: nowrap;
+                
+            }
+            .divCategoria, #name, #text, #checkbox, #categoria
+            {
+                display: inline-block;
+                *display: inline;
+                zoom: 1;
+                vertical-align: top;
+                font-size: 12px;
+            }
+            .divCategoria
+            {
+                position:relative;
+                background-color: #70FFB8;
+                /* border-style: solid;
+                border-width: 3px;
+                border-color: #4BFFA6; */
+                height: 907px;
+                width: 400px;
+                top:0;
+                margin-left: 20px;
+                margin-right: 20px;
+                overflow-y: auto;
+                border-bottom-left-radius: 30px;
+                border-bottom-right-radius: 30px;
+            }
+            .titolo
+            {
+                text-align: center;
+                font-family: Verdana, Geneva, sans-serif;
+                font-size: 30px;
+                letter-spacing: -1.2px;
+                word-spacing: 0px;
+                color: #479EA1;
+                font-weight: 400;
+                text-decoration: none solid rgb(68, 68, 68);
+                font-style: normal;
+                font-variant: small-caps;
+                text-transform: none;
+                /* border-radius: 30px; */
+            }
+            .divTodo
+            {   
+                display: block;
+                margin:auto;
+                margin-top: 40px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                background-color: #7092FF;
+                /* border-style: solid;
+                border-width: 3px;
+                border-color: #587FFF; */
+                width: 85%;
+                max-height:200px;
+                border-radius: 20px;
+            }
+            .divTodo > *
+            {
+                margin-top: 7px;
+            }
+            .divTodo > input
+            {
+                position: relative;
+                display: inline-block;
+                left:30%;
+                
+            }
+            .divTodo > button
+            {
+                
+                position: relative;
+                display: inline-block;
+                left:50%;
+                /* top:5px; */
+                background-color: RoyalBlue;
+                border: none;
+                color: white;
+                padding: 10px 14px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            .divTodo > button:hover {
+                background-color: DodgerBlue;
+            }
+            .divTodo > select
+            {
+                position: relative;
+                display: inline-block;
+                left:10%;
+            }
+            .divTodo > textarea
+            {
+                background-color: #C3FFFF;
+                border-color: #7ffdfd;
+                resize: vertical;
+                border-width: 2px;
+                /* height: 150px; */
+                display: block;
+                width: 90%;
+                margin: auto;
+                padding-left: 10px;
+                border-radius: 20px;
+            }
+            .pulsanteAggiungi
+            {
+                width: 100%;
+                height: 40px;
+                font-size: 30px;
+                color: #26ad6a;
+                border-width: 0;
+                background-color: transparent;
+            }
+            #todolist > ::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            #todolist > ::-webkit-scrollbar-track {
+                background:transparent;
+                border-radius: 20px;
+                
+            }
+            #todolist > ::-webkit-scrollbar-track-piece:end {
+                background: transparent;
+                margin-bottom: 20px; 
+            }
+
+            #todolist > ::-webkit-scrollbar-thumb {
+                background-color: #42D58C;
+                border-radius: 20px;
+            }
