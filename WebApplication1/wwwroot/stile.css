@@ -39,14 +39,17 @@
             {
                 display: table;
                 height: 100%;
-                background-color: #26ad6a;
-                border-radius: 0px 0px 0px 15px;
+                background: linear-gradient(
+                    
+                    rgba(112, 255, 113, 0.7),
+                    rgba(112, 255, 185, 0.7)
+                );
             }
             #aggiungi_categoria > *
             {
                 text-align: center;
                 font-size: 30px;
-                color:#70FFB8;
+                color:#26ad6a;
                 display: table-cell;
                 vertical-align: middle;
                 height: 100%;
@@ -55,10 +58,16 @@
             body 
             {                
                 width: 100vw;
-                background: #A2FFFF;
-                /* height: 100vh; */
+                background: 
+                /* top, transparent red, faked with gradient */ 
+                linear-gradient(
+                    rgba(162,255,255, 0.7), 
+                  rgba(162, 209, 255, 0.7)
+                ),
+                /* bottom, image */
+                url(https://cdn.wallpapersafari.com/45/18/tap1bQ.jpg) no-repeat center; 
+                height: 100vh; 
                 margin: 0px;
-                overflow-x: auto;
             }
             #aggiungi
             {
@@ -81,6 +90,7 @@
                 top: 40px;
                 height: 100%;
                 white-space: nowrap;
+                overflow-x: auto;
                 
             }
             .divCategoria, #name, #text, #checkbox, #categoria
@@ -94,7 +104,10 @@
             .divCategoria
             {
                 position:relative;
-                background-color: rgba(112,255,184, 0.6);
+                background: linear-gradient(
+                    rgba(112, 255, 185, 0.7),
+                    rgba(112, 255, 113, 0.7) 
+                );
                 /* border-style: solid;
                 border-width: 3px;
                 border-color: #4BFFA6; */
@@ -132,7 +145,7 @@
                 margin-bottom: 40px;
                 padding-top: 10px;
                 padding-bottom: 10px;
-                background-color: #7092FF;
+                background-color: rgb(162,162,255);
                 /* border-style: solid;
                 border-width: 3px;
                 border-color: #587FFF; */
@@ -219,6 +232,39 @@
             }
 
             #todolist > ::-webkit-scrollbar-thumb {
-                background-color: #42D58C;
+                background-color: #00cc67;
                 border-radius: 20px;
+            }
+
+            #todolist::-webkit-scrollbar {
+                height: 10px;
+            }
+
+            #todolist::-webkit-scrollbar-track {
+                background:transparent;
+                border-radius: 20px;
+                
+            }
+            #todolist::-webkit-scrollbar-track-piece:end {
+                background: transparent;
+                margin-bottom: 20px; 
+            }
+
+            #todolist::-webkit-scrollbar-thumb {
+                background-color: rgb(162, 209, 255);
+                border-radius: 20px;
+            }
+            .spinner-grow
+            {
+
+                width: 500px;
+                height: 500px;
+                margin: auto;
+            }
+            .container
+            {
+                width: 100vw;
+                height: 100vh;
+                display: flex;
+                align-items: center;
             }

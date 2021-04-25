@@ -204,7 +204,7 @@ function CaricaTodos()
                 $('#pulsanteDelete'+todos[x].categoryId).hide();
             }
                 $('#grid').show();
-                $('.spinner-grow').hide();
+                $('.container').hide();
         }
     }
 }
@@ -305,6 +305,8 @@ function putCategory(id)
     refhttp.onreadystatechange = 
     function () {
         if (this.readyState == 4 && this.status < 300) {
+            $('#todolist').html('');
+            caricaCategorie();
         }
     }
 }
