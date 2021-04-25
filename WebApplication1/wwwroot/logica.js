@@ -4,7 +4,7 @@ var select;
 var divCategorie;
 var modificando;
 var lists;
-
+var h;
 var refhttp;
 
 function IstanziaTodo()
@@ -67,7 +67,13 @@ function caricaListe()
 
     }
 }
-
+function intermezzo(id)
+{
+    
+    if(h!=$('#name'+id).height() || $('#name'+id).height()>=120)
+    {
+    putSenzaCarica(id)}
+}
 function CaricaTodos() 
 {
    
@@ -91,7 +97,21 @@ function CaricaTodos()
             var y=0;
             $(divCategorie).each(function () {
                 $(this).html('');
-                $('<p></p>').attr('class','titolo').html(listaOpzioni[y]).appendTo(this);
+                $('<input type="text"></input>')
+                .attr({
+                    'class':'titolo',
+                    'id':'titolo'+categories[y].id,
+                    'onfocusin':'prePutCategoria('+categories[y].id+')',
+                    'onfocusout':'mandaPutCategoria('+categories[y].id+')',
+                })
+                .val(listaOpzioni[y].html()).appendTo(this);
+                $('<button></button>')
+                .attr({
+                    'onclick':"deleteCategoria("+categories[y].id+")",
+                    'class':'pulsanteDelete',
+                    "id":'pulsanteDelete'+categories[y].id
+                })
+                .html('<i class="fa fa-minus-square">').appendTo(this);
 
                 $('<button></button>')
                 .attr({
@@ -106,22 +126,25 @@ function CaricaTodos()
                 {
                     var idtemp = $(this).attr('id');
                     //alert(idtemp);
-                    $(this).append(
-                        $('<div></div>')
-                        .attr({
-                            'value': lists[x].date,
-                            'class': lists[x].id,
-                            'id':idtemp+'_'+lists[x].id
-                        })
-                        .append(
-                            $('<p></p>')
-                            .attr({
-                                'class':'titoloData fa fa-plus-square',
-                                'onclick':"postTodosNuovo("+idtemp.substring(3)+","+lists[x].id+")"
-                            })
-                            .html(lists[x].date.substr(0,10))
-                        )
-                    );
+                    // $(this).append(
+                    //     $('<div></div>')
+                    //     .attr({
+                    //         'value': lists[x].date,
+                    //         'class': lists[x].id,
+                    //         'id': idtemp+'_'+lists[x].id
+                    //     })
+                    //     .append(
+                    //         $('<div></div>')
+                    //         .attr({
+                    //             'onclick':"postTodosNuovo("+idtemp.substring(3)+","+lists[x].id+")"
+                    //         })
+                    //         .append([
+                    //             $('<i class="fa fa-plus-square">'),
+                    //             '<input type="date" value="'+lists[x].date.substr(0,10)+'"></input>',
+                    //             $('<i class="fa fa-times-circle">')
+                    //             ])
+                    //     )
+                    // );
                 }
                 
             });
@@ -135,12 +158,13 @@ function CaricaTodos()
                 .attr({
                     'id':'name'+todos[x].id,
                     'onfocusin':'prePut('+todos[x].id+')',
-                    'onfocusout':'mandaPut('+todos[x].id+')'
+                    'onfocusout':'mandaPut('+todos[x].id+')',
+                    "mousedown":'h=$(this).height()',
+                    "onmouseup":'intermezzo('+todos[x].id+')'
                 })
-                //.resizable({resize: putSenzaCarica(todos[x].id)})
+                // .resizable({resize: putSenzaCarica(todos[x].id)})
                 .height(todos[x].altezza)
                 .html(todos[x].name);
-
                 //creo la checkbox is Complete
                var isComplete= $('<input></input>')
                 .attr({
@@ -168,20 +192,23 @@ function CaricaTodos()
                 
                 //aggiungo alla categoria adeguata i vari elementi
                 
-                $("#div"+todos[x].categoryId+"_"+todos[x].listId)
+                $("#div"+todos[x].categoryId)//+"_"+todos[x].listId)
                 .append($('<div></div>')
                 .attr("class","divTodo")
+                .attr("id","divTodo"+todos[x].id)
+                .attr("data-lista",todos[x].listId)
                 .append(taskToDo, singolaCategoria, isComplete, del));
 
                 
+                
+                $('#pulsanteDelete'+todos[x].categoryId).hide();
+            }
                 $('#grid').show();
                 $('.spinner-grow').hide();
-                
-            }
         }
     }
 }
-    function deleteTodos(id)
+function deleteTodos(id)
 {
     var r=confirm("conferma l'eliminazione");
     if(r)
@@ -197,13 +224,13 @@ function CaricaTodos()
     }
 }
 
-function postTodosNuovo(idCategoria,idlista)
+function postTodosNuovo(idCategoria)
 {
     refhttp.open("POST", "https://localhost:44318/api/todo/", true);
     refhttp.setRequestHeader("Content-Type", "application/json");
 
-    var lista ='{"name": "' + "" + '","isComplete":'+false+',"categoryId":'+idCategoria+',"listId":'+idlista+',"altezza":'+50+'}';
-    
+    var lista ='{"name": "","isComplete":'+false+',"categoryId":'+idCategoria+',"listId":1,"altezza":'+50+'}';
+    //alert(lista);
     refhttp.send(lista);
 
     refhttp.onreadystatechange = 
@@ -215,27 +242,6 @@ function postTodosNuovo(idCategoria,idlista)
     }
 }
 
-function postTodos()
-{
-    refhttp.open("POST", "https://localhost:44318/api/todo/", true);
-    refhttp.setRequestHeader("Content-Type", "application/json");
-
-    var name = document.getElementById('name').value;
-    var isComplete = document.getElementById('isComplete').checked; 
-    var category= document.getElementById('listacategoria').value;
-
-    var lista ='{"name": "' + name + '","isComplete":'+isComplete+',"categoryId":'+category+',"listId": 1}';
-    
-    refhttp.send(lista);
-
-    refhttp.onreadystatechange = 
-    function () {
-
-        if (this.readyState == 4 && this.status < 300) {
-            CaricaTodos();
-        }
-    }
-}    
 function putTodos(id)
 {
     refhttp.open("PUT", "https://localhost:44318/api/todo/"+id, true);
@@ -245,7 +251,8 @@ function putTodos(id)
     var isComplete = document.getElementById('isComplete'+id).checked; 
     var category= document.getElementById('categoria'+id).value;
     var altezza = $('#name'+id).height();
-    var lista ='{"id":'+id+',"name": "' + name + '","isComplete":'+isComplete+',"categoryId":'+category+',"listId": 1,"altezza":'+altezza+'}';
+    var idlista = $('#divTodo'+id).attr('data-lista');
+    var lista ='{"id:1,"name": "' + name + '","isComplete":'+isComplete+',"categoryId":'+category+',"listId":'+idlista+',"altezza":'+altezza+'}';
     
     refhttp.send(lista);
     refhttp.onreadystatechange = 
@@ -265,9 +272,9 @@ function putSenzaCarica(id)
     var isComplete = $('#isComplete'+id).prop("checked"); 
     var category= $('#categoria'+id).val();
     var altezza = $('#name'+id).height();
-    
-    var lista ='{"id":'+id+',"name": "' + name + '","isComplete":'+isComplete+',"categoryId":'+category+',"listId": 1,"altezza":'+altezza+'}';
-    alert(lista);
+    var idlista = $('#divTodo'+id).attr('data-lista');
+    // {"id":++,"name":"","isComplete":false,"categoryId":3,"listId":1,"altezza":50}
+    var lista ='{"id":'+id+',"name":"' + name + '","isComplete":'+isComplete+',"categoryId":'+category+',"listId": '+idlista+',"altezza":'+altezza+'}';
     refhttp.send(lista);
     refhttp.onreadystatechange = 
     function () {
@@ -285,7 +292,61 @@ function mandaPut(id)
     if(modificando!=document.getElementById('name'+id).value)
         putSenzaCarica(id);
 }
+function putCategory(id)
+{
+    refhttp.open("PUT", "https://localhost:44318/api/category/"+id, true);
+    refhttp.setRequestHeader("Content-Type", "application/json");
+
+    var nome= document.getElementById('titolo'+id).value;
+    var lista ='{"id":'+id+',"name":"'+nome+'"}';
+    
+    refhttp.send(lista);
+
+    refhttp.onreadystatechange = 
+    function () {
+        if (this.readyState == 4 && this.status < 300) {
+        }
+    }
+}
+
+function prePutCategoria(id)
+{
+    modificando=document.getElementById('titolo'+id).value;
+}
+
+function mandaPutCategoria(id)
+{
+    if(modificando!=document.getElementById('titolo'+id).value)
+    putCategory(id)
+        
+}
 function postCategoria()
 {
-    
+    refhttp.open("POST", "https://localhost:44318/api/category/", true);
+    refhttp.setRequestHeader("Content-Type", "application/json");
+    var lista='{"name":""}';
+    refhttp.send(lista);
+    refhttp.onreadystatechange = 
+    function () {
+        if (this.readyState == 4 && this.status < 300) {
+            $('#todolist').html('');
+            caricaCategorie();
+        }
+    }
+}
+function deleteCategoria(id)
+{
+    var r=confirm("conferma l'eliminazione");
+    if(r)
+    {
+    refhttp.open("DELETE", "https://localhost:44318/api/category/"+id, true);
+    refhttp.send();
+    refhttp.onreadystatechange = 
+    function () {
+        if (this.readyState == 4 && this.status == 204) {
+            $('#todolist').html('');
+            caricaCategorie();
+        }
+    }
+    }
 }

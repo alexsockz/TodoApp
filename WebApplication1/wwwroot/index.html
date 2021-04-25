@@ -3,9 +3,13 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.min.css" />
+
     <link rel="stylesheet" href="stile.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
     <script src="logica.js"></script>
     <script>
 
@@ -18,9 +22,13 @@
         <div id="grid" style="display:none">
             <div  id="todolist">   
             </div>
-            <div id="aggiungi_categoria">
-                <i class="fa fa-plus-square" onclick="postCategoria()"></i>
+            <div id="aggiungi_categoria"  onclick="postCategoria()">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            </div>
+            <div id ="aggiungi data">
+
             </div>
         </div>
+        
     </body>
 </html>
