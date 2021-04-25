@@ -3,6 +3,7 @@ var todos;
 var select;
 var divCategorie;
 var modificando;
+var lists;
 
 var refhttp;
 
@@ -24,28 +25,47 @@ function caricaCategorie()
         if (this.readyState == 4 )
         {
             categories = JSON.parse(this.responseText);
-            select = document.createElement('select');
+            select = $('<select id="listacategoria"></select>');
             for(var x = 0; x < categories.length; x++)
             {
-                var option = document.createElement('option');
-                option.setAttribute("value",categories[x].id);
-                option.setAttribute("class",'lista'+categories[x].id);
                 
-                option.innerHTML=categories[x].name;
-                select.setAttribute('id','listacategoria');
-                select.appendChild(option);
+                var prova = $('<option></option>');
 
-                var sezione = document.createElement('div');
-                sezione.setAttribute("class","divCategoria");
-                sezione.setAttribute("id","div"+categories[x].id);
-                document.getElementById("todolist").appendChild(sezione);
-                divCategorie.push(sezione);
+                prova.attr({
+                    "value" :categories[x].id,
+                    "class": 'lista'+categories[x].id,
+                });
+                prova.html(categories[x].name);
+                prova.appendTo(select);
+
+                divCategorie.push($('<div></div>')
+                .attr({
+                    "class": "divCategoria",
+                    "id": "div"+categories[x].id
+                })
+                .appendTo('#todolist'));
             }
-            var div = document.getElementById('categoria');
+            caricaListe();
+            
+        }
+    }   
+}
+function caricaListe()
+{
+    refhttp.open("GET", "https://localhost:44318/api/list", true);
+
+    refhttp.send();
+
+    refhttp.onreadystatechange = 
+    function () {
+        if (this.readyState == 4 )
+        {
+            //alert(this.responseText);
+            lists = JSON.parse(this.responseText);
             CaricaTodos();
         }
+
     }
-    
 }
 
 function CaricaTodos() 
@@ -59,51 +79,86 @@ function CaricaTodos()
     function () {
 
         if (this.readyState == 4 && this.status == 200) {
-
+            
             todos = JSON.parse(this.responseText);
+            // alert(this.responseText);
+             var listaOpzioni=[];
 
-            var tbody;
+            $(select.clone()).children().each(function () {
+                listaOpzioni.push($(this));
+            });
 
-            for(var x=0;x<divCategorie.length;x++)
-            {
-                divCategorie[x].innerHTML="";
-                p = document.createElement('p');
-                p.setAttribute('class','titolo');
-                p.innerHTML=select[x].innerHTML;
-                divCategorie[x].appendChild(p);
+            var y=0;
+            $(divCategorie).each(function () {
+                $(this).html('');
+                $('<p></p>').attr('class','titolo').html(listaOpzioni[y]).appendTo(this);
 
-                var pulsante = document.createElement('button');
-                pulsante.setAttribute('onclick',"postTodosNuovo("+categories[x].id+")")
-                pulsante.setAttribute('class','pulsanteAggiungi');
-                pulsante.innerHTML='<i class="fa fa-plus-square">';
-                divCategorie[x].appendChild(pulsante);
-            }
+                $('<button></button>')
+                .attr({
+                    'onclick':"postTodosNuovo("+categories[y].id+")",
+                    'class':'pulsanteAggiungi'
+                })
+                .html('<i class="fa fa-plus-square">').appendTo(this);
+
+                y++;
+
+                for(var x = 0; x < lists.length; x++)
+                {
+                    var idtemp = $(this).attr('id');
+                    //alert(idtemp);
+                    $(this).append(
+                        $('<div></div>')
+                        .attr({
+                            'value': lists[x].date,
+                            'class': lists[x].id,
+                            'id':idtemp+'_'+lists[x].id
+                        })
+                        .append(
+                            $('<p></p>')
+                            .attr({
+                                'class':'titoloData fa fa-plus-square',
+                                'onclick':"postTodosNuovo("+idtemp.substring(3)+","+lists[x].id+")"
+                            })
+                            .html(lists[x].date.substr(0,10))
+                        )
+                    );
+                }
+                
+            });
+            
+
 
             for (var x = 0; x < todos.length; x++) {
 
                 //creo la textbox con dentro la todo
-                var taskToDo = document.createElement('textarea');
-                // taskToDo.setAttribute('type','text');
-                // taskToDo.setAttribute('value',todos[x].name);
-                taskToDo.innerHTML=todos[x].name;
-                taskToDo.setAttribute('id','name'+todos[x].id);
-                taskToDo.setAttribute('onfocusin','prePut('+todos[x].id+')');
-                taskToDo.setAttribute('onfocusout','mandaPut('+todos[x].id+')');
+                var taskToDo = $('<textarea></textarea>')
+                .attr({
+                    'id':'name'+todos[x].id,
+                    'onfocusin':'prePut('+todos[x].id+')',
+                    'onfocusout':'mandaPut('+todos[x].id+')'
+                })
+                //.resizable({resize: putSenzaCarica(todos[x].id)})
+                .height(todos[x].altezza)
+                .html(todos[x].name);
 
                 //creo la checkbox is Complete
-                var isComplete= document.createElement('input');
-                isComplete.setAttribute('type','checkbox');
-                isComplete.setAttribute('id','isComplete'+todos[x].id);
-                isComplete.setAttribute('onclick','putTodos('+todos[x].id+')');
-                isComplete.checked=todos[x].isComplete;
-                
-                //utilizzo la select che ho preparato prima 
-                var singolaCategoria = select.cloneNode(true);
-                singolaCategoria.setAttribute('id','categoria'+todos[x].id);
-                singolaCategoria.setAttribute('onchange','putTodos('+todos[x].id+')');
+               var isComplete= $('<input></input>')
+                .attr({
+                    'type':'checkbox',
+                    'id':'isComplete'+todos[x].id,
+                    'onclick':'putSenzaCarica('+todos[x].id+')'
+                })
+                .prop("checked",todos[x].isComplete);
 
-                var opzione = singolaCategoria.getElementsByClassName("lista"+todos[x].categoryId)[0];
-                opzione.selected=true;
+                //utilizzo la select che ho preparato prima 
+                var singolaCategoria = select.clone();
+                
+                singolaCategoria
+                .attr({
+                    'id':'categoria'+todos[x].id,
+                    'onchange':'putTodos('+todos[x].id+')'
+                })
+                .val(todos[x].categoryId);
 
                 //creo il pulsante cancella
 
@@ -112,18 +167,17 @@ function CaricaTodos()
                 del.innerHTML='<i class="fa fa-trash">';
                 
                 //aggiungo alla categoria adeguata i vari elementi
-                tbody = document.getElementById("div"+todos[x].categoryId);
-                var divTodo = document.createElement('div');
-                divTodo.setAttribute("class","divTodo")
-                divTodo.appendChild(taskToDo);
-                divTodo.appendChild(singolaCategoria);
-                divTodo.appendChild(isComplete);
-                divTodo.appendChild(del);
-                tbody.appendChild(divTodo);
+                
+                $("#div"+todos[x].categoryId+"_"+todos[x].listId)
+                .append($('<div></div>')
+                .attr("class","divTodo")
+                .append(taskToDo, singolaCategoria, isComplete, del));
 
-                $('#loading').hide();
+                
+                $('#grid').show();
+                $('.spinner-grow').hide();
+                
             }
-
         }
     }
 }
@@ -143,12 +197,12 @@ function CaricaTodos()
     }
 }
 
-function postTodosNuovo(idCategoria)
+function postTodosNuovo(idCategoria,idlista)
 {
     refhttp.open("POST", "https://localhost:44318/api/todo/", true);
     refhttp.setRequestHeader("Content-Type", "application/json");
 
-    var lista ='{"name": "' + "" + '","isComplete":'+false+',"categoryId":'+idCategoria+',"listId": 1}';
+    var lista ='{"name": "' + "" + '","isComplete":'+false+',"categoryId":'+idCategoria+',"listId":'+idlista+',"altezza":'+50+'}';
     
     refhttp.send(lista);
 
@@ -190,7 +244,8 @@ function putTodos(id)
     var name = document.getElementById('name'+id).value;
     var isComplete = document.getElementById('isComplete'+id).checked; 
     var category= document.getElementById('categoria'+id).value;
-    var lista ='{"id":'+id+',"name": "' + name + '","isComplete":'+isComplete+',"categoryId":'+category+',"listId": 1}';
+    var altezza = $('#name'+id).height();
+    var lista ='{"id":'+id+',"name": "' + name + '","isComplete":'+isComplete+',"categoryId":'+category+',"listId": 1,"altezza":'+altezza+'}';
     
     refhttp.send(lista);
     refhttp.onreadystatechange = 
@@ -198,6 +253,25 @@ function putTodos(id)
         if (this.readyState == 4 && this.status < 300) {
             //alert('modifica effettuata');
             CaricaTodos();
+        }
+    }
+}
+function putSenzaCarica(id)
+{
+    refhttp.open("PUT", "https://localhost:44318/api/todo/"+id, true);
+    refhttp.setRequestHeader("Content-Type", "application/json");
+
+    var name = $('#name'+id).val();
+    var isComplete = $('#isComplete'+id).prop("checked"); 
+    var category= $('#categoria'+id).val();
+    var altezza = $('#name'+id).height();
+    
+    var lista ='{"id":'+id+',"name": "' + name + '","isComplete":'+isComplete+',"categoryId":'+category+',"listId": 1,"altezza":'+altezza+'}';
+    alert(lista);
+    refhttp.send(lista);
+    refhttp.onreadystatechange = 
+    function () {
+        if (this.readyState == 4 && this.status < 300) {
         }
     }
 }
@@ -209,9 +283,9 @@ function prePut(id)
 function mandaPut(id)
 {
     if(modificando!=document.getElementById('name'+id).value)
-        putTodos(id);
+        putSenzaCarica(id);
 }
-postCategoria()
+function postCategoria()
 {
     
 }

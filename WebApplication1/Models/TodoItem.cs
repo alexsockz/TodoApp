@@ -18,5 +18,7 @@ namespace TodoApi.Models
         public int categoryId { get; set; }
 
         public int listId { get; set; }
+
+        public int altezza { get; set; }
     }
 }
