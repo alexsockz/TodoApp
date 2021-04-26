@@ -250,10 +250,9 @@ function putTodos(id)
     var name = document.getElementById('name'+id).value;
     var isComplete = document.getElementById('isComplete'+id).checked; 
     var category= document.getElementById('categoria'+id).value;
-    var altezza = $('#name'+id).height();
+    var altezza = Math.trunc($('#name'+id).height());
     var idlista = $('#divTodo'+id).attr('data-lista');
-    var lista ='{"id:1,"name": "' + name + '","isComplete":'+isComplete+',"categoryId":'+category+',"listId":'+idlista+',"altezza":'+altezza+'}';
-    
+    var lista ='{"id":'+id+',"name": "' + name + '","isComplete":'+isComplete+',"categoryId":'+category+',"listId":'+idlista+',"altezza":'+altezza+'}';
     refhttp.send(lista);
     refhttp.onreadystatechange = 
     function () {
@@ -271,10 +270,10 @@ function putSenzaCarica(id)
     var name = $('#name'+id).val();
     var isComplete = $('#isComplete'+id).prop("checked"); 
     var category= $('#categoria'+id).val();
-    var altezza = $('#name'+id).height();
+    var altezza = Math.trunc($('#name'+id).height());
     var idlista = $('#divTodo'+id).attr('data-lista');
     // {"id":++,"name":"","isComplete":false,"categoryId":3,"listId":1,"altezza":50}
-    var lista ='{"id":'+id+',"name":"' + name + '","isComplete":'+isComplete+',"categoryId":'+category+',"listId": '+idlista+',"altezza":'+altezza+'}';
+    var lista ='{"id":'+id+',"name":"' + name + '","isComplete":'+isComplete+',"categoryId":'+category+',"listId": '+idlista+',"altezza":'+ altezza+'}';
     refhttp.send(lista);
     refhttp.onreadystatechange = 
     function () {
