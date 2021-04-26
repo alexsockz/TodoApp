@@ -203,8 +203,9 @@ function CaricaTodos()
                 
                 $('#pulsanteDelete'+todos[x].categoryId).hide();
             }
-                $('#grid').show();
-                $('.container').hide();
+				$('#grid').fadeIn(1000);
+                $('.load').fadeOut(1000);
+				
         }
     }
 }
