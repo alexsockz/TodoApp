@@ -256,15 +256,25 @@
             }
             .spinner-grow
             {
-
                 width: 500px;
                 height: 500px;
                 margin: auto;
             }
-            .container
+            .load
             {
-                width: 100vw;
-                height: 100vh;
-                display: flex;
+				background: 
+                /* top, transparent red, faked with gradient */ 
+                linear-gradient(
+                    rgba(162,255,255, 0.7), 
+                  rgba(162, 209, 255, 0.7)
+                ),
+                /* bottom, image */
+                url(https://cdn.wallpapersafari.com/45/18/tap1bQ.jpg) no-repeat center; 
+				position: fixed;
+				display: flex;
+				justify-content:center;
                 align-items: center;
+                width: 100%;
+                height: 100%;
+                
             }
