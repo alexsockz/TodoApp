@@ -28,11 +28,11 @@ namespace TodoApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TodoContext>(opt => opt.UseMySQL(Configuration["ConnectionString:TodoDB"]));
-            services.AddDbContext<CategoryContext>(opt => opt.UseMySQL(Configuration["ConnectionString:TodoDB"]));
-            services.AddDbContext<ListContext>(opt => opt.UseMySQL(Configuration["ConnectionString:TodoDB"]));
-            services.AddDbContext<UserContext>(opt => opt.UseMySQL(Configuration["ConnectionString:TodoDB"]));
-            services.AddDbContext<ListMembershipContext>(opt => opt.UseMySQL(Configuration["ConnectionString:TodoDB"]));
+            services.AddDbContext<TodoContext>(opt => opt.UseSqlServer(Configuration["ConnectionString:TodoDB"]));
+                     services.AddDbContext<CategoryContext>(opt => opt.UseSqlServer(Configuration["ConnectionString:TodoDB"]));
+   services.AddDbContext<ListContext>(opt => opt.UseSqlServer(Configuration["ConnectionString:TodoDB"]));
+            services.AddDbContext<UserContext>(opt => opt.UseSqlServer(Configuration["ConnectionString:TodoDB"]));
+            services.AddDbContext<ListMembershipContext>(opt => opt.UseSqlServer(Configuration["ConnectionString:TodoDB"]));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
