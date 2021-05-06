@@ -17,7 +17,7 @@ function IstanziaTodo()
 function caricaCategorie()
 {
     divCategorie=[];
-    refhttp.open("GET", "https://localhost:44318/api/category", true);
+    refhttp.open("GET", "http://provavalle5ie.somee.com/prova/api/category", true);
     refhttp.send();
     refhttp.onreadystatechange = 
     function () {
@@ -52,7 +52,7 @@ function caricaCategorie()
 }
 function caricaListe()
 {
-    refhttp.open("GET", "https://localhost:44318/api/list", true);
+    refhttp.open("GET", "http://provavalle5ie.somee.com/prova/api/list", true);
 
     refhttp.send();
 
@@ -77,7 +77,7 @@ function intermezzo(id)
 function CaricaTodos() 
 {
    
-    refhttp.open("GET", "https://localhost:44318/api/todo", true);
+    refhttp.open("GET", "http://provavalle5ie.somee.com/prova/api/todo", true);
 
     refhttp.send();
 
@@ -214,7 +214,7 @@ function deleteTodos(id)
     var r=confirm("conferma l'eliminazione");
     if(r)
     {
-    refhttp.open("DELETE", "https://localhost:44318/api/todo/"+id, true);
+        refhttp.open("DELETE", "http://provavalle5ie.somee.com/prova/api/todo/"+id, true);
     refhttp.send();
     refhttp.onreadystatechange = 
     function () {
@@ -227,7 +227,7 @@ function deleteTodos(id)
 
 function postTodosNuovo(idCategoria)
 {
-    refhttp.open("POST", "https://localhost:44318/api/todo/", true);
+    refhttp.open("POST", "http://provavalle5ie.somee.com/prova/api/todo/", true);
     refhttp.setRequestHeader("Content-Type", "application/json");
 
     var lista ='{"name": "","isComplete":'+false+',"categoryId":'+idCategoria+',"listId":1,"altezza":'+50+'}';
@@ -245,7 +245,7 @@ function postTodosNuovo(idCategoria)
 
 function putTodos(id)
 {
-    refhttp.open("PUT", "https://localhost:44318/api/todo/"+id, true);
+    refhttp.open("PUT", "http://provavalle5ie.somee.com/prova/api/todo/"+id, true);
     refhttp.setRequestHeader("Content-Type", "application/json");
 
     var name = document.getElementById('name'+id).value;
@@ -265,7 +265,7 @@ function putTodos(id)
 }
 function putSenzaCarica(id)
 {
-    refhttp.open("PUT", "https://localhost:44318/api/todo/"+id, true);
+    refhttp.open("PUT", "http://provavalle5ie.somee.com/prova/api/todo/"+id, true);
     refhttp.setRequestHeader("Content-Type", "application/json");
 
     var name = $('#name'+id).val();
@@ -294,7 +294,7 @@ function mandaPut(id)
 }
 function putCategory(id)
 {
-    refhttp.open("PUT", "https://localhost:44318/api/category/"+id, true);
+    refhttp.open("PUT", "http://provavalle5ie.somee.com/prova/api/category/"+id, true);
     refhttp.setRequestHeader("Content-Type", "application/json");
 
     var nome= document.getElementById('titolo'+id).value;
@@ -324,7 +324,7 @@ function mandaPutCategoria(id)
 }
 function postCategoria()
 {
-    refhttp.open("POST", "https://localhost:44318/api/category/", true);
+    refhttp.open("POST", "http://provavalle5ie.somee.com/prova/api/category/", true);
     refhttp.setRequestHeader("Content-Type", "application/json");
     var lista='{"name":""}';
     refhttp.send(lista);
@@ -341,7 +341,7 @@ function deleteCategoria(id)
     var r=confirm("conferma l'eliminazione");
     if(r)
     {
-    refhttp.open("DELETE", "https://localhost:44318/api/category/"+id, true);
+        refhttp.open("DELETE", "http://provavalle5ie.somee.com/prova/api/category/"+id, true);
     refhttp.send();
     refhttp.onreadystatechange = 
     function () {
